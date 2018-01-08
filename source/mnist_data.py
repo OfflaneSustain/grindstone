@@ -16,6 +16,7 @@ def load():
     header_bytes = 4
     label_bytes = 1
     picture_bytes = 1
+    num_classes = 10
     
     # data dir. Project directory must be arranged as <project dir>/source/<py file>, and <project dir/data/two files below
     data_dir = "/data/"
@@ -46,16 +47,16 @@ def load():
         image_magic_num, image_num_items, \
         image_num_rows, image_num_columns = struct.unpack(
                 ">IIII", image_mnist_file.read(16))
+        # cannot change this statement, have to read from file into linear array
         X = np.fromfile ( image_mnist_file, dtype, -1, "")
-        print(X.shape)
+
+        X = np.reshape ( X, (784,60000))
     
-    #reformat single vector into a matrix, 1 image per column, 60000 columns
-    X = X.reshape(image_num_items, image_num_rows, image_num_columns)
-    
+
     #sanity check
     print("Finished reading MNIST images, image array size %s" %(str(X.shape)))
 
-    return X.astype(np.float32), y.astype(np.float32)
+    return X.astype(np.float32), y.astype(np.float32), num_classes
     
     
     
