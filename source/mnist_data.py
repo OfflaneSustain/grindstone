@@ -7,7 +7,7 @@ def load():
 
     # loading into signed floats even though data in file is unisgned byte 
     # need negative values and floats for mean normalization
-    dtype = np.float32
+    dtype = np.int8
     
     # constants, defined as per the idx file format in use
     # labels file - 4 bytes magic no, 4 bytes number of rows, rest data
@@ -47,6 +47,7 @@ def load():
         image_num_rows, image_num_columns = struct.unpack(
                 ">IIII", image_mnist_file.read(16))
         X = np.fromfile ( image_mnist_file, dtype, -1, "")
+        print(X.shape)
     
     #reformat single vector into a matrix, 1 image per column, 60000 columns
     X = X.reshape(image_num_items, image_num_rows, image_num_columns)
@@ -54,7 +55,7 @@ def load():
     #sanity check
     print("Finished reading MNIST images, image array size %s" %(str(X.shape)))
 
-    return X, y
+    return X.astype(np.float32), y.astype(np.float32)
     
     
     
